@@ -1,0 +1,58 @@
+name: Build Apps Release (Manual) (TEST)
+on: workflow_dispatch
+jobs:
+    android:
+        name: Build CI (Android)
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: Clone repository
+            uses: actions/checkout@v4.2.2
+          - name: Create key.properties config file
+            run: echo $KEY_PROPERTIES | base64 -di > android/app/key.properties
+            env:
+              KEY_PROPERTIES: ${{ secrets.KEY_PPTS_BASE64 }}
+          - name: Extract JKS
+            run: echo $KEYSTORE_BASE64 | base64 -di > android/app/prog-release.jks
+            env:
+              KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          - name: Set up Flutter
+            uses: subosito/flutter-action@v2.18.0
+            with:
+                channel: beta
+                flutter-version: 3.30.0-0.1.pre
+          # - run: flutter doctor
+          - run: flutter pub get
+          - run: flutter build apk --release --split-per-abi
+          - name: Upload to artifact
+            uses: actions/upload-artifact@v4.6.2
+            with:
+                name: OtterStudy_Android
+                path: |
+                    build/app/outputs/flutter-apk/*.apk
+    
+    ios:
+        name: Build CI (iOS) (TEST ONLY)
+        runs-on: macos-latest
+        
+        steps:
+          - name: Clone repository
+            uses: actions/checkout@v4.2.2
+          - name: Set up Flutter
+            uses: subosito/flutter-action@v2.18.0
+            with:
+                channel: beta
+                flutter-version: 3.30.0-0.1.pre
+          # - run: flutter doctor
+          - run: flutter pub get
+          - run: |
+                flutter build ios --release --no-codesign
+                ln -sf ./build/ios/iphoneos Payload
+                zip -r9 app.ipa Payload/runner.app
+          - name: Upload
+            uses: actions/upload-artifact@v4.6.2
+            with:
+              if-no-files-found: error
+              name: OtterStudy_iOS-TestBuild
+              path: |
+                *.ipa
