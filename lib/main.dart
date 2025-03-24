@@ -27,7 +27,7 @@ void main() async {
   }
 
   MediaKit.ensureInitialized();
-  if (Platform.isAndroid || Platform.isIOS) {
+  if (Platform.isAndroid) {
     await FlutterDisplayMode.setHighRefreshRate();
   }
   Request();
