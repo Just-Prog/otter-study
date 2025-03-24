@@ -52,5 +52,11 @@
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>本应用需要定位权限以完成签到等需要位置信息的操作。</string>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>UISupportsDocumentBrowser</key>
+	<true/>
 </dict>
 </plist>
