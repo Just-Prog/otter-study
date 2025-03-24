@@ -1,16 +1,25 @@
-# otter_study
+# otterstudy 水獭习路
 
 A unofficial client for GoktechEDU powered by Flutter
 
-## Getting Started
+由Flutter驱动的“河狸学途”客户端实现。
 
-This project is a starting point for a Flutter application.
+## 调试
 
-A few resources to get you started if this is your first Flutter project:
+```shell
+flutter run
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 编译
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```shell
+flutter build apk --release --split-per-abi
+```
+
+## TODO
+
+- 作业提交
+- “成长”功能适配
+- 个资修改/详细信息展示
+- GokTech“职业”“活动”相关适配
+- 接入消息推送服务
