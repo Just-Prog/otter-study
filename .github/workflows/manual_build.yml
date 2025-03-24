@@ -9,7 +9,7 @@ jobs:
           - name: Clone repository
             uses: actions/checkout@v4.2.2
           - name: Create key.properties config file
-            run: echo $KEY_PROPERTIES | base64 -di > android/app/key.properties
+            run: echo $KEY_PROPERTIES | base64 -di > android/key.properties
             env:
               KEY_PROPERTIES: ${{ secrets.KEY_PPTS_BASE64 }}
           - name: Extract JKS
