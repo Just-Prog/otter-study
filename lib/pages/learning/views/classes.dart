@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otter_study/pages/learning/index.dart';
 
+// TODO 加课码
 class ClassesListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -93,10 +94,19 @@ class ClassesListView extends StatelessWidget {
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            Text(
-                                              "${e['teacherName']}",
-                                              style:
-                                                  const TextStyle(fontSize: 13),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.person,
+                                                  size: 16,
+                                                ),
+                                                Expanded(
+                                                    child: Text(
+                                                  "授课教师: ${e['teacherName']}",
+                                                  style: const TextStyle(
+                                                      fontSize: 13),
+                                                ))
+                                              ],
                                             )
                                           ],
                                         ))

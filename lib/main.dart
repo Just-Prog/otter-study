@@ -22,7 +22,8 @@ void main() async {
   if (!prod) {
     bool batteryOpt = await AndroidBatteryOptimizations.isEnabled();
     if (Platform.isAndroid && batteryOpt) {
-      await AndroidBatteryOptimizations.showPermissionDialog();
+      await AndroidBatteryOptimizations
+          .showPermissionDialog(); // 防止小米HyperOS/MIUI智能省电或Android原生电池优化阻断调试连接
     }
   }
 

@@ -7,7 +7,8 @@ import 'package:otter_study/http/index.dart';
 class ClassController extends GetxController {
   RxString classId = "0".obs;
   RxString courseId = "0".obs;
-  RxString name = "课程".obs;
+  RxString name = "默认课程".obs;
+  RxString teacher = "默认教师".obs;
   RxList chaptersList = RxList([]);
   RxList activitiesList = RxList([]);
 
@@ -24,6 +25,7 @@ class ClassController extends GetxController {
         params: {"classId": classId.value, "courseId": courseId.value},
         options: Options(extra: {'version': 'android'}));
     name.value = resp.data['className'];
+    teacher.value = resp.data['classTeacher'];
     chaptersList.value = resp.data['appChapterListResList'];
     return;
   }
@@ -42,7 +44,6 @@ class ClassController extends GetxController {
   }
 
   contentResHandler(item) async {
-    print(item);
     switch (item['type']) {
       case 0:
         Get.toNamed("/homework", parameters: {

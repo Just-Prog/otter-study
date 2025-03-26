@@ -48,7 +48,7 @@ jobs:
           - run: |
                 flutter build ios --release --no-codesign
                 ln -sf ./build/ios/iphoneos Payload
-                zip -r9 app.ipa Payload/runner.app
+                zip -r9 app-release_iphoneos.ipa Payload/runner.app
           - name: Upload
             uses: actions/upload-artifact@v4.6.2
             with:

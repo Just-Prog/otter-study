@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -50,6 +51,7 @@ class Request {
       {path, params, method = "GET", data}) async {
     String pathDivider = Platform.isWindows ? r"\" : r"/";
     var target = "${(await getDownloadDirectory()).path}$pathDivider$name";
+    log(target);
     final Response resp = await dio.download(url, target,
         queryParameters: params, options: Options(method: method), data: data);
     return resp;
