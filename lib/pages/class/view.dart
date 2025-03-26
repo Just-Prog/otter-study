@@ -79,6 +79,7 @@ class _ClassState extends State<ClassPage> with TickerProviderStateMixin {
                 ),
                 SliverToBoxAdapter(
                     child: Obx(() => Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: _classController.chaptersList
                               .map((e) => Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -148,6 +149,7 @@ class _ClassState extends State<ClassPage> with TickerProviderStateMixin {
                 ),
                 SliverToBoxAdapter(
                     child: Obx(() => Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: _classController.activitiesList
                               .map((e) => Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 10),
