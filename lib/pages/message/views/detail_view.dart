@@ -43,7 +43,7 @@ class MsgDetailPage extends StatelessWidget {
               footer: const MaterialFooter(),
               onRefresh: () async {
                 try {
-                  _detailController.resMap.clear();
+                  await _detailController.clearMsgs();
                   await _detailController.fetchMsgs();
                   _detailController.refreshController.finishRefresh();
                   return IndicatorResult.success;

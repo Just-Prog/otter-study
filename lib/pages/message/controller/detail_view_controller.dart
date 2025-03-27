@@ -64,6 +64,12 @@ class MsgDetailController extends GetxController {
     return;
   }
 
+  clearMsgs() async {
+    pageNo = 0;
+    resMap.clear();
+    return;
+  }
+
   msgHandler(i) {
     switch (i['type']) {
       case 0:
