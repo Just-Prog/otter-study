@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:otter_study/utils/goktech_assets.dart';
@@ -229,22 +230,26 @@ class _dynamicState extends State<DynamicView>
                                           itemBuilder: (ctx, idx) {
                                             return InkWell(
                                               onTap: () {
-                                                print(_learningController
-                                                    .recentContentData[
-                                                        'dynamicRecentListResList']
-                                                        [idx]
-                                                    .toString());
-                                                Get.toNamed("/class",
-                                                    parameters: {
-                                                      'courseId': _learningController
-                                                                  .recentContentData[
-                                                              'dynamicRecentListResList']
-                                                          [idx]['courseId'],
-                                                      'classId': _learningController
-                                                                  .recentContentData[
-                                                              'dynamicRecentListResList']
-                                                          [idx]['recordId']
-                                                    });
+                                                if (_learningController
+                                                                .recentContentData[
+                                                            'dynamicRecentListResList']
+                                                        [idx]['enterFlag'] ==
+                                                    1) {
+                                                  Get.toNamed("/class",
+                                                      parameters: {
+                                                        'courseId': _learningController
+                                                                    .recentContentData[
+                                                                'dynamicRecentListResList']
+                                                            [idx]['courseId'],
+                                                        'classId': _learningController
+                                                                    .recentContentData[
+                                                                'dynamicRecentListResList']
+                                                            [idx]['recordId']
+                                                      });
+                                                } else {
+                                                  SmartDialog.showToast(
+                                                      "已结课或教师设置锁定班课");
+                                                }
                                               },
                                               child: Row(
                                                 spacing: 10,

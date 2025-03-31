@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:otter_study/pages/learning/index.dart';
 
@@ -62,11 +63,16 @@ class _ClassesListState extends State<ClassesListView>
                                   return Card(
                                     clipBehavior: Clip.antiAlias,
                                     child: InkWell(
-                                      onTap: () => Get.toNamed("/class",
-                                          parameters: {
+                                      onTap: () {
+                                        if (e['enterFlag'] == 1) {
+                                          Get.toNamed("/class", parameters: {
                                             'classId': e['id'],
                                             'courseId': e['courseId']
-                                          }),
+                                          });
+                                        } else {
+                                          SmartDialog.showToast("已结课或教师设置锁定班课");
+                                        }
+                                      },
                                       child: ConstrainedBox(
                                           constraints: BoxConstraints(
                                               maxWidth: MediaQuery.of(context)
@@ -144,10 +150,26 @@ class _ClassesListState extends State<ClassesListView>
                                                 ],
                                               ),
                                               if (e['topFlag'] == 1) ...[
-                                                Align(
-                                                  alignment: Alignment(-5, -5),
-                                                  heightFactor: .9,
-                                                  widthFactor: .9,
+                                                Positioned(
+                                                    right: 0,
+                                                    top: 3,
+                                                    child: Opacity(
+                                                        opacity: 0.6,
+                                                        child: Transform(
+                                                          transform:
+                                                              Matrix4.rotationZ(
+                                                                  0.6),
+                                                          child: Icon(
+                                                            Icons
+                                                                .push_pin_rounded,
+                                                            size: 16,
+                                                          ),
+                                                        )))
+                                              ],
+                                              if (e['classType'] != "") ...[
+                                                Positioned(
+                                                  left: 4,
+                                                  top: 4,
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                         color: Colors.orange,
@@ -159,7 +181,8 @@ class _ClassesListState extends State<ClassesListView>
                                                       padding:
                                                           EdgeInsets.all(5),
                                                       child: Text(
-                                                        "置顶",
+                                                        e['classType']
+                                                            .toString(),
                                                         style: const TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 12),
