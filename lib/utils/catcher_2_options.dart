@@ -4,7 +4,7 @@ import 'dart:io';
 
 Future<File> getLogsPath() async {
   String dir = (await getApplicationDocumentsDirectory()).path;
-  final String filename = p.join(dir, ".otterstudy_logs");
+  final String filename = p.join(dir, "otterstudy_logs.log");
   final File file = File(filename);
   if (!await file.exists()) {
     await file.create(recursive: true);
