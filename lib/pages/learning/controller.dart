@@ -43,6 +43,13 @@ class LearningController extends GetxController {
     return;
   }
 
+  fetchDynamicPage() async {
+    await fetchActivityList();
+    await fetchCourseMediumList();
+    await fetchRecentContentInfo();
+    return;
+  }
+
   fetchClassList() async {
     var resp = await Request().get(Api.fetchClassListApp,
         params: {
@@ -95,10 +102,8 @@ class LearningController extends GetxController {
 
   @override
   void onInit() async {
-    await fetchActivityList();
-    await fetchCourseMediumList();
-    await fetchRecentContentInfo();
-    await fetchClassList();
+    // await fetchDynamicPage();
+    // await fetchClassList();
     super.onInit();
   }
 }
