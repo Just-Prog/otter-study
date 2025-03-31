@@ -73,6 +73,28 @@ class _ClassesListState extends State<ClassesListView>
                                           SmartDialog.showToast("已结课或教师设置锁定班课");
                                         }
                                       },
+                                      onLongPress: () async {
+                                        await showDialog(
+                                            context: context,
+                                            builder: (ctx) {
+                                              return AlertDialog(
+                                                content: Container(
+                                                  width: double.maxFinite,
+                                                  child: ListView(
+                                                    shrinkWrap: true,
+                                                    children: [
+                                                      ListTile(
+                                                          title: Text("置顶")),
+                                                      ListTile(
+                                                          title: Text("归档")),
+                                                      ListTile(
+                                                          title: Text("退出班课")),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            });
+                                      },
                                       child: ConstrainedBox(
                                           constraints: BoxConstraints(
                                               maxWidth: MediaQuery.of(context)

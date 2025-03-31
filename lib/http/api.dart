@@ -49,11 +49,16 @@ class Api {
   static const String fetchActivityInactive = "/tac/home-page/activity/over";
 
   //课程列表 网页端接口，弃用
-  static const String fetchClassList = "/tac/class/v1/stu/class";
-  static const String fetchArchivedClassList = "/tac/class/getArchivesClass";
+  //static const String fetchClassList = "/tac/class/v1/stu/class";
+  //static const String fetchArchivedClassList = "/tac/class/getArchivesClass";
 
   //课程列表 UniApp端接口
   static const String fetchClassListApp = "/tac/apps/class/my-class";
+
+  //课程列表 置顶接口 PUT方法
+  static const String putClassListTop = "/tac/class/top/";
+  //课程列表 归档状态设置 POST
+  static const String setClassArchived = "/tac/class/archives";
 
   //课程相关 网页端接口
   static const String fetchClassInfo = "/tac/class/classInfo";
