@@ -36,7 +36,7 @@ class HomeworkController extends GetxController {
   void onInit() async {
     classId.value = Get.parameters['classId'] ?? "0";
     hwId.value = Get.parameters['homeworkId'] ?? "0";
-    await fetchHomeworkData();
+    // await fetchHomeworkData();
     super.onInit();
   }
 }
