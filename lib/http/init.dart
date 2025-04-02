@@ -56,4 +56,10 @@ class Request {
         queryParameters: params, options: Options(method: method), data: data);
     return resp;
   }
+
+  put(String url, {params, options}) async {
+    final Response resp =
+        await dio.put(url, queryParameters: params, options: options);
+    return resp;
+  }
 }
