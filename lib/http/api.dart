@@ -55,10 +55,13 @@ class Api {
   //课程列表 UniApp端接口
   static const String fetchClassListApp = "/tac/apps/class/my-class";
 
-  //课程列表 置顶接口 PUT方法
-  static const String putClassListTop = "/tac/class/top/";
-  //课程列表 归档状态设置 POST
-  static const String setClassArchived = "/tac/class/archives";
+  //课程列表 网页端接口
+  static const String putClassListTop = "/tac/class/top/"; // 置顶
+  static const String setClassArchived = "/tac/class/archives"; // 归档切换
+  static const String joinClass = "/tac/class/join"; // 加课
+  static const String quitClass = "/tac/class/exitClass"; // 退课
+  // static const String validateClassCode = "/tac/class/classCode"; // 加课码检查
+  // static const String fetchClassCodeInfo = "/tac/class/getClassInfo/code"; // 加课码拿信息
 
   //课程相关 网页端接口
   static const String fetchClassInfo = "/tac/class/classInfo";
