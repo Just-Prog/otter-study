@@ -253,46 +253,48 @@ class _ClassesListState extends State<ClassesListView>
                                                         height: 90,
                                                         fit: BoxFit.cover),
                                                   ],
-                                                  const SizedBox(
-                                                    width: 15,
-                                                  ),
                                                   Expanded(
-                                                      child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        "${e['className']} ${e['exClassName']}",
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        maxLines: 1,
-                                                        style: const TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icons.person,
-                                                            size: 16,
-                                                          ),
-                                                          Expanded(
-                                                              child: Text(
-                                                            "授课教师: ${e['teacherName']}",
-                                                            style:
-                                                                const TextStyle(
-                                                                    fontSize:
-                                                                        13),
-                                                          ))
-                                                        ],
-                                                      )
-                                                    ],
+                                                      child: Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 17.5),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "${e['className']} ${e['exClassName']}",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          maxLines: 1,
+                                                          style: const TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons.person,
+                                                              size: 16,
+                                                            ),
+                                                            Expanded(
+                                                                child: Text(
+                                                              "授课教师: ${e['teacherName']}",
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          13),
+                                                            ))
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
                                                   ))
                                                 ],
                                               ),
