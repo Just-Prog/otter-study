@@ -63,6 +63,39 @@ class LearningController extends GetxController {
     return;
   }
 
+  putTopClass(String id) async {
+    await Request().put(Api.putClassListTop + id);
+    await fetchClassList();
+    return;
+  }
+
+  changeClassArchiveStatus(String id) async {
+    await Request().post(Api.setClassArchived, {"classId": id});
+    await fetchClassList();
+    return;
+  }
+
+  requestQuitClass(String id, String courseId) async {
+    await Request().post(Api.quitClass, {"classId": id, "courseId": id});
+    // 基于对一部分公开课的退课请求的观察结果来看，退课时使用的classId和courseId是一样的，逆天
+    // 普通状态课程不清楚
+    await fetchClassList();
+    return;
+  }
+
+  requestJoinClass(String code) async {
+    try {
+      var resp = await Request().post(Api.joinClass, {"classCode": code});
+      await fetchClassList();
+      return {
+        "id": resp.data['id'],
+        "courseId": resp.data['courseId'],
+      };
+    } catch (e) {
+      return {"id": -1, "courseId": -1};
+    }
+  }
+
   contentResHandler(item) async {
     print(item);
     switch (item['type']) {

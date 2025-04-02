@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -31,18 +33,85 @@ class _ClassesListState extends State<ClassesListView>
                 return CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(
-                      child: Obx(() => SwitchListTile(
-                          title: Text("归档课程?"),
-                          value: _learningController.isClassListArchived.value,
-                          onChanged: (b) async {
-                            _learningController.isClassListArchived.value = b;
-                            await _learningController.fetchClassList();
-                          })),
+                      child: Obx(() => Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 5),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    child: Row(
+                                  children: [
+                                    const Text(
+                                      "归档课程?",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    Switch(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        value: _learningController
+                                            .isClassListArchived.value,
+                                        onChanged: (b) async {
+                                          _learningController
+                                              .isClassListArchived.value = b;
+                                          await _learningController
+                                              .fetchClassList();
+                                        })
+                                  ],
+                                )),
+                                IconButton(
+                                    onPressed: () async {
+                                      await showDialog(
+                                          context: context,
+                                          builder: (ctx) {
+                                            TextEditingController
+                                                _codeController =
+                                                TextEditingController();
+                                            return AlertDialog(
+                                              title: Text("添加课程"),
+                                              content: TextField(
+                                                  controller: _codeController,
+                                                  decoration: InputDecoration(
+                                                      labelText: "加课码")),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Text("取消")),
+                                                TextButton(
+                                                    onPressed: () async {
+                                                      var tmp =
+                                                          await _learningController
+                                                              .requestJoinClass(
+                                                                  _codeController
+                                                                      .text);
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      if (tmp['id'] != -1) {
+                                                        Get.toNamed("/class",
+                                                            parameters: {
+                                                              'classId':
+                                                                  tmp['id'],
+                                                              'courseId': tmp[
+                                                                  'courseId']
+                                                            });
+                                                      }
+                                                      return;
+                                                    },
+                                                    child: Text("确定")),
+                                              ],
+                                            );
+                                          });
+                                    },
+                                    icon: Icon(Icons.add))
+                              ],
+                            ),
+                          )),
                     ),
                     SliverToBoxAdapter(
                         child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 20),
                       child: TextField(
                         controller: _learningController.classSearchController,
                         onChanged: (v) => _learningController.fetchClassList(),
@@ -84,10 +153,66 @@ class _ClassesListState extends State<ClassesListView>
                                                     shrinkWrap: true,
                                                     children: [
                                                       ListTile(
-                                                          title: Text("置顶")),
+                                                          onTap: () {
+                                                            _learningController
+                                                                .putTopClass(
+                                                                    e['id']);
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          title: Text(
+                                                              e['topFlag'] == 0
+                                                                  ? "置顶"
+                                                                  : "取消置顶")),
                                                       ListTile(
-                                                          title: Text("归档")),
+                                                          onTap: () {
+                                                            _learningController
+                                                                .changeClassArchiveStatus(
+                                                                    e['id']);
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          title: Text(
+                                                              _learningController
+                                                                      .isClassListArchived
+                                                                      .value
+                                                                  ? "取消归档"
+                                                                  : "归档")),
                                                       ListTile(
+                                                          onTap: () async {
+                                                            await showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder: (ctx) {
+                                                                  return AlertDialog(
+                                                                      title: Text(
+                                                                          "退出班课？"),
+                                                                      content: Text(
+                                                                          "退出后可通过课码重新进入，继续？"),
+                                                                      actions: [
+                                                                        TextButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              Navigator.of(context).pop();
+                                                                            },
+                                                                            child:
+                                                                                Text("取消")),
+                                                                        TextButton(
+                                                                            onPressed:
+                                                                                () async {
+                                                                              await _learningController.requestQuitClass(e['id'], e['courseId']);
+                                                                              Navigator.of(context).pop();
+                                                                            },
+                                                                            child:
+                                                                                Text("确认")),
+                                                                      ]);
+                                                                });
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
                                                           title: Text("退出班课")),
                                                     ],
                                                   ),
