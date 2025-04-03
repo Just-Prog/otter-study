@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
-import 'package:otter_study/utils/uri_handler.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:otter_study/utils/goktech_assets.dart';

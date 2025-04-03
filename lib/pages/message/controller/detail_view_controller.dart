@@ -1,8 +1,6 @@
-import 'dart:developer';
 
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'package:get/get.dart';
 import 'package:otter_study/http/index.dart';
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:otter_study/pages/login/controller/user_controller.dart';
 
 import 'controller/login_controller.dart';
 

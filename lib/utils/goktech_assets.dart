@@ -1,5 +1,3 @@
-import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 
 String extToIcons(String ext) {
   switch (ext) {

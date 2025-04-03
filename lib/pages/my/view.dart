@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 
 import 'package:otter_study/pages/login/controller/index.dart';
 
-import 'package:otter_study/utils/geolocation.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});

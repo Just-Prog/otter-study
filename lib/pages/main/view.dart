@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:otter_study/pages/login/controller/index.dart';
 
 import 'controller.dart';
 
@@ -53,29 +52,27 @@ class _MainState extends State<MainPage> {
           ))
         ],
       ),
-      bottomNavigationBar:
-          MediaQuery.of(context).orientation == Orientation.portrait
-              ? Obx(() => BottomNavigationBar(
-                  currentIndex: _mainController.pageIdx.value,
-                  onTap: (v) {
-                    _mainController.pageIdx.value = v;
-                    _mainController.pageCtl.animateToPage(v,
-                        duration: Duration(milliseconds: 300),
-                        curve: Curves.ease);
-                    setState(() {});
-                  },
-                  selectedItemColor: Theme.of(context).primaryColor,
-                  unselectedItemColor: Colors.grey,
-                  items: _mainController.bottomNavItems.map((e) {
-                    return BottomNavigationBarItem(
-                        icon: Badge(
-                            label: Text(e['count'].toString()),
-                            // padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
-                            child: e['icon'],
-                            isLabelVisible: e['showBadge']),
-                        label: e['label']);
-                  }).toList()))
-              : null,
+      bottomNavigationBar: MediaQuery.of(context).orientation ==
+              Orientation.portrait
+          ? Obx(() => BottomNavigationBar(
+              currentIndex: _mainController.pageIdx.value,
+              onTap: (v) {
+                _mainController.pageIdx.value = v;
+                _mainController.pageCtl.animateToPage(v,
+                    duration: Duration(milliseconds: 300), curve: Curves.ease);
+                setState(() {});
+              },
+              selectedItemColor: Theme.of(context).primaryColor,
+              unselectedItemColor: Colors.grey,
+              items: _mainController.bottomNavItems.map((e) {
+                return BottomNavigationBarItem(
+                    icon: Badge(
+                        label: Text(e['count'].toString()),
+                        child: e['icon'],
+                        isLabelVisible: e['count'] != 0 && e['count'] != null),
+                    label: e['label']);
+              }).toList()))
+          : null,
     );
   }
 }

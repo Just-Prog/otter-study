@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
@@ -39,6 +38,7 @@ class MainController extends GetxController {
         bottomNavItems.indexWhere((item) => item['label'] == "消息")];
     try {
       Response resp = await Request().get(Api.fetchUnreadMsgsCount);
+      print("unread: ${resp.data}");
       item['count'] = resp.data;
       item['showBadge'] = (item['count'] != 0);
       // bottomNavItems.refresh();
@@ -51,6 +51,7 @@ class MainController extends GetxController {
 
   @override
   void onInit() async {
+    print("login status: ${_credentialController.isLoggedIn.value}");
     if (_credentialController.isLoggedIn.value) {
       await fetchUnreadMsgCount();
       await _userController.fetchUserInfo();

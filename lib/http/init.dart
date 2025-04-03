@@ -6,7 +6,6 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:downloadsfolder/downloadsfolder.dart';
 
 import 'package:otter_study/http/index.dart';
-import 'package:path_provider/path_provider.dart';
 import 'interceptors.dart';
 
 class Request {

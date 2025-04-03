@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:otter_study/common/index.dart';
 import 'package:otter_study/pages/login/controller/credential_controller.dart';
 
 import './index.dart';
