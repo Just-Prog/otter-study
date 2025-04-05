@@ -4,9 +4,14 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:downloadsfolder/downloadsfolder.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import 'package:otter_study/http/index.dart';
 import 'interceptors.dart';
+
+int _downloadCount = 1;
+int _downloadTotal = 1;
 
 class Request {
   static final Request _instance = Request._internal();
@@ -51,8 +56,25 @@ class Request {
     String pathDivider = Platform.isWindows ? r"\" : r"/";
     var target = "${(await getDownloadDirectory()).path}$pathDivider$name";
     log(target);
-    final Response resp = await dio.download(url, target,
-        queryParameters: params, options: Options(method: method), data: data);
+
+    final GlobalKey _loadingKey = GlobalKey();
+    SmartDialog.showLoading(builder: (_) => _DownloadLoading(key: _loadingKey));
+    final Response resp = await dio.download(
+      url,
+      target,
+      queryParameters: params,
+      options: Options(method: method),
+      data: data,
+      onReceiveProgress: (count, total) {
+        _downloadCount = count;
+        _downloadTotal = total;
+        _loadingKey.currentState!.setState(
+          () {},
+        );
+      },
+    );
+    SmartDialog.dismiss(status: SmartStatus.loading);
+    SmartDialog.showToast("文件已存储至 $target");
     return resp;
   }
 
@@ -60,5 +82,36 @@ class Request {
     final Response resp =
         await dio.put(url, queryParameters: params, options: options);
     return resp;
+  }
+}
+
+class _DownloadLoading extends StatefulWidget {
+  const _DownloadLoading({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _DownloadLoadingState();
+}
+
+class _DownloadLoadingState extends State<_DownloadLoading> {
+  static final GlobalKey<_DownloadLoadingState> key = GlobalKey();
+
+  reloadData() {
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+        contentPadding: EdgeInsets.symmetric(vertical: 30),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 15,
+          children: [
+            CircularProgressIndicator(
+              value: _downloadCount / _downloadTotal,
+            ),
+            Text("Loading")
+          ],
+        ));
   }
 }
