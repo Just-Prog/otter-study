@@ -102,16 +102,25 @@ class _DownloadLoadingState extends State<_DownloadLoading> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+        title: Text("下载"),
         contentPadding: EdgeInsets.symmetric(vertical: 30),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          spacing: 15,
-          children: [
-            CircularProgressIndicator(
-              value: _downloadCount / _downloadTotal,
-            ),
-            Text("Loading")
-          ],
-        ));
+        content: Container(
+            width: double.maxFinite,
+            child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 15,
+                  children: [
+                    if (_downloadCount == 0) ...[
+                      LinearProgressIndicator(),
+                    ] else ...[
+                      LinearProgressIndicator(
+                        value: _downloadCount / _downloadTotal,
+                      ),
+                    ],
+                    Text("$_downloadCount / $_downloadTotal")
+                  ],
+                ))));
   }
 }
