@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+import 'package:otter_study/http/index.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:otter_study/utils/goktech_assets.dart';
@@ -38,6 +39,27 @@ class _coursewareState extends State<CoursewarePage> {
       });
       if (_coursewareController.vidAddr.value != "") {
         player.open(addr);
+        await player.seek(
+          Duration(
+            seconds: int.parse((await Request().post(Api.fetchStuVideoInfo, {
+              "videoId": _coursewareController.dataId.value,
+              "isClass": 1,
+              "joinType": 0
+            }))
+                .data['record']),
+          ),
+        );
+        player.stream.playing.listen((_) async {
+          if (!_) {
+            int r = player.state.position.inSeconds;
+            Request().post(Api.sendStuVideoInfo, {
+              "videoId": _coursewareController.dataId.value,
+              "isClass": 1,
+              "joinType": 0,
+              "record": r
+            });
+          }
+        });
       }
 
       if ((Platform.isAndroid || Platform.isIOS) &&

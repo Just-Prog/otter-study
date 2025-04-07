@@ -78,4 +78,9 @@ class Api {
   //作业详细信息 UniApp端
   static const String fetchHomeworkDetailApp =
       "/tac/apps/homeworkStudent/getHomeWorkDet";
+
+  //视频相关 基础信息
+  static const String fetchStuVideoInfo = "/tac/studentVideo/stuVideoInfo";
+  //视频相关 发送信息
+  static const String sendStuVideoInfo = "/tac/studentVideo/addStuVideo";
 }
