@@ -93,12 +93,12 @@ class ApiInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     print(err.response?.realUri.toString());
     print(err.response?.data);
+    print(err.message);
     SmartDialog.showToast(
-        "请求错误: ${err.response?.realUri.toString()}\n(${err.response?.data})");
-    if (err.response?.data['code'] == 10701) {
-      _apiCredentialController.logout();
-    }
-    // super.onError(err, handler);
+        "请求错误: ${err.response?.realUri.toString()}\n(${err.response?.data ?? err.message})");
+    // if (err.response?.data['code'] == 10701) {
+    //   _apiCredentialController.logout();
+    // }
     handler.next(err);
   }
 }
