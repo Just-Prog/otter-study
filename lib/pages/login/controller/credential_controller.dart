@@ -94,11 +94,4 @@ class CredentialController extends GetxController {
     }
     return;
   }
-
-  @override
-  void onInit() async {
-    prefs = await SharedPreferences.getInstance();
-    await checkLogin();
-    super.onInit();
-  }
 }

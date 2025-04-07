@@ -32,6 +32,11 @@ void main() async {
     await FlutterDisplayMode.setHighRefreshRate();
   }
   Request();
+
+  final _credentialController = Get.put(CredentialController());
+  _credentialController.prefs = await SharedPreferences.getInstance();
+  await _credentialController.checkLogin();
+
   final Catcher2Options debugConfig = Catcher2Options(
     SilentReportMode(),
     [
