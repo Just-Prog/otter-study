@@ -31,18 +31,6 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <meta-data
-            android:name="GETUI_APPID"
-            android:value="qJpf4JNs7V51LGK29OMKW2"/>
-        <meta-data
-            android:name="PUSH_APPID"
-            android:value="qJpf4JNs7V51LGK29OMKW2"/>
-        <meta-data
-            android:name="PUSH_APPKEY"
-            android:value="F18628FyrD7CoKsurd5vN5"/>
-        <meta-data
-            android:name="PUSH_APPSECRET"
-            android:value="o0rgNmgSBY6ytAcW7PjvNA"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
