@@ -25,4 +25,4 @@ flutter build apk --release --split-per-abi
 - “成长”功能适配
 - 个资修改/详细信息展示
 - GokTech“职业”“活动”相关适配
-- 接入消息推送服务
+- ~~接入消息推送服务 (接入个推要原包签名的sha256)~~
