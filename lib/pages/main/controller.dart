@@ -19,15 +19,14 @@ class MainController extends GetxController {
     const MyPage()
   ];
   final RxList<Map<String, dynamic>> bottomNavItems = RxList([
-    {"icon": const Icon(Icons.home), "label": "首页", "showBadge": false},
-    {"icon": const Icon(Icons.abc), "label": "学习", "showBadge": false},
+    {"icon": const Icon(Icons.home), "label": "首页"},
+    {"icon": const Icon(Icons.abc), "label": "学习"},
     {
       "icon": const Icon(Icons.messenger_outline_rounded),
       "label": "消息",
-      "count": 0,
-      "showBadge": false
+      "count": 0
     },
-    {"icon": const Icon(Icons.person), "label": "我的", "showBadge": false}
+    {"icon": const Icon(Icons.person), "label": "我的"}
   ]);
   final PageController pageCtl = PageController(keepPage: false);
   RxInt pageIdx = 0.obs;
@@ -35,16 +34,9 @@ class MainController extends GetxController {
   fetchUnreadMsgCount() async {
     var item = bottomNavItems[
         bottomNavItems.indexWhere((item) => item['label'] == "消息")];
-    try {
-      Response resp = await Request().get(Api.fetchUnreadMsgsCount);
-      print("unread: ${resp.data}");
-      item['count'] = resp.data;
-      item['showBadge'] = (item['count'] != 0);
-      // bottomNavItems.refresh();
-    } catch (e) {
-      item['showBadge'] = false;
-      // bottomNavItems.refresh();
-    }
+    Response resp = await Request().get(Api.fetchUnreadMsgsCount);
+    print("unread: ${resp.data}");
+    item['count'] = resp.data;
     return;
   }
 
@@ -54,6 +46,9 @@ class MainController extends GetxController {
       await fetchUnreadMsgCount();
       await _userController.fetchUserInfo();
       await _userController.loadTenant();
+      ever(pageIdx, (_) async {
+        await fetchUnreadMsgCount();
+      });
     }
     super.onInit();
   }
