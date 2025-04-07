@@ -82,25 +82,23 @@ class CredentialController extends GetxController {
   }
 
   checkLogin() async {
-    Map<String, dynamic> data = await loadCredential();
-    if (data['token'] != "" && data['macKey'] != "") {
+    if ((await loadCredential())['token'] != "" &&
+        (await loadCredential())['macKey'] != "") {
       try {
         await refreshToken();
-        return true;
       } catch (e) {
         isLoggedIn.value = false;
-        return false;
       }
     } else {
       isLoggedIn.value = false;
-      return false;
     }
-    return false;
+    return;
   }
 
   @override
   void onInit() async {
     prefs = await SharedPreferences.getInstance();
+    await checkLogin();
     super.onInit();
   }
 }

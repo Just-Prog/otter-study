@@ -1,3 +1,4 @@
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:flutter/material.dart';
@@ -42,7 +43,8 @@ class MainController extends GetxController {
 
   @override
   void onInit() async {
-    if (await _credentialController.checkLogin()) {
+    print("login status: ${_credentialController.isLoggedIn.value}");
+    if (_credentialController.isLoggedIn.value) {
       await fetchUnreadMsgCount();
       await _userController.fetchUserInfo();
       await _userController.loadTenant();
