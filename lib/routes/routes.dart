@@ -7,6 +7,7 @@ import 'package:otter_study/pages/homework/index.dart';
 import 'package:otter_study/pages/login/index.dart';
 import 'package:otter_study/pages/message/index.dart';
 import 'package:otter_study/pages/main/index.dart';
+import 'package:otter_study/pages/my/views/edit_view.dart';
 import 'package:otter_study/pages/signIn/index.dart';
 import 'package:otter_study/pages/webview/index.dart';
 
@@ -21,6 +22,7 @@ class Routes {
     GetPage(name: "/signin/click", page: () => const SignInClickPage()),
     GetPage(name: "/courseware", page: () => const CoursewarePage()),
     GetPage(name: "/webview", page: () => const Webview()),
-    GetPage(name: "/user/login", page: () => const LoginPage())
+    GetPage(name: "/user/login", page: () => const LoginPage()),
+    GetPage(name: "/user/edit", page: () => const UserEditingView())
   ];
 }

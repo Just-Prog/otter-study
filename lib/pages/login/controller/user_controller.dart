@@ -12,13 +12,17 @@ class UserController extends GetxController {
   String userId = "";
   RxString tenantId = "-1".obs;
   RxString tenantName = "暂无租户".obs;
+  RxMap userFullInfoJWT = RxMap({});
+  RxMap userFullInfo = RxMap({});
 
   fetchUserInfo() async {
     var resp = await Request().get(Api.fetchUserInfo);
+    userFullInfoJWT.value = await _apiCredentialController
+        .userInfoDecode((await _apiCredentialController.loadJWT()));
     userName.value = resp.data['nickName'];
+    userFullInfo.value = resp.data;
     userCollegeDesc.value = "${resp.data['college']} - ${resp.data['major']}";
-    userAvatar.value = (await _apiCredentialController
-        .userInfoDecode((await _apiCredentialController.loadJWT())))['av'];
+    userAvatar.value = userFullInfoJWT['av'];
     return;
   }
 

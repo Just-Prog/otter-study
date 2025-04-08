@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 
 import 'package:otter_study/pages/login/controller/index.dart';
 
-
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
 
@@ -37,6 +36,8 @@ class MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                 onTap: () {
                   if (!_credentialController.isLoggedIn.value) {
                     Get.toNamed("/user/login");
+                  } else {
+                    Get.toNamed("/user/edit");
                   }
                 },
                 child: Container(
