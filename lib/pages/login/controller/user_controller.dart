@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otter_study/http/index.dart';
+import 'package:otter_study/pages/login/controller/credential_controller.dart';
 
 class UserController extends GetxController {
   final _apiCredentialController = Get.put(CredentialController());

@@ -4,6 +4,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:otter_study/http/index.dart';
 import 'package:otter_study/pages/login/controller/user_controller.dart';
+import 'package:otter_study/pages/login/controller/credential_controller.dart';
 import 'package:otter_study/pages/message/index.dart';
 
 class MsgPage extends StatefulWidget {

@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:otter_study/pages/home/index.dart';
 import 'package:otter_study/pages/learning/view.dart';
 import 'package:otter_study/pages/message/index.dart';
 import 'package:otter_study/pages/login/controller/user_controller.dart';
+import 'package:otter_study/pages/login/controller/credential_controller.dart';
 import 'package:otter_study/pages/my/index.dart';
 
 class MainController extends GetxController {
