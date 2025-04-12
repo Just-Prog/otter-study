@@ -13,12 +13,16 @@ class Api {
   static const String loginFetchTokenByCodeUid = "/uc/v1/users/token";
   static const String refreshToken = "/uc/v1/users/refresh-token";
 
+  //文件上传
+  static const String uploadDocLink = "/tc/doc/upload";
+
   //租户管理部分
   static const String getTenantList = "/uc/v1/users/tenants";
   static const String switchTenant = "/uc/v1/users/switch-tenant/";
 
   //用户信息
   static const String fetchUserInfo = "/uc/v1/users/info";
+  static const String setUserAvatar = "/uc/v1/users/avatar";
 
   //首页信息
   static const String homePageCarousels = "/tac/home-page/mngCarousels";

@@ -1,7 +1,12 @@
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide MultipartFile, FormData;
+import 'package:image_picker/image_picker.dart';
+import 'package:file_selector/file_selector.dart';
+
 import 'package:otter_study/http/index.dart';
 import 'package:otter_study/pages/login/controller/credential_controller.dart';
 
@@ -77,5 +82,32 @@ class UserController extends GetxController {
       await switchTenant(target);
     }
     return target;
+  }
+
+  uploadAvatar() async {
+    final XFile? image;
+    if (Platform.isAndroid || Platform.isIOS) {
+      final ImagePicker picker = ImagePicker();
+      image = await picker.pickImage(source: ImageSource.gallery);
+    } else {
+      image = await openFile(confirmButtonText: "选择", acceptedTypeGroups: [
+        XTypeGroup(extensions: ['png', 'jpg', 'jpeg', 'gif'], label: "图片文件")
+      ]);
+    }
+    if (image != null) {
+      //TODO 图片裁剪/尺寸检测
+      Map<String, dynamic> map = {};
+      var data = await image.readAsBytes();
+      map["file"] = MultipartFile.fromBytes(data, filename: image.name);
+      FormData formData = FormData.fromMap(map);
+      var u_resp = await Request().post(Api.uploadDocLink, formData);
+      var resp = await Request()
+          .put(Api.setUserAvatar, data: {"avatar": u_resp.data['url']});
+      // 上传完头像之后会发回来新token
+      await _apiCredentialController.setCredential(
+          resp.headers['X-Token'][0], resp.headers['X-Mackey'][0]);
+      await fetchUserInfo();
+    }
+    return;
   }
 }

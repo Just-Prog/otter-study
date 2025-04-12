@@ -78,9 +78,9 @@ class Request {
     return resp;
   }
 
-  put(String url, {params, options}) async {
-    final Response resp =
-        await dio.put(url, queryParameters: params, options: options);
+  put(String url, {params, data, options}) async {
+    final Response resp = await dio.put(url,
+        queryParameters: params, options: options, data: data);
     return resp;
   }
 }
