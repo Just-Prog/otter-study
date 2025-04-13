@@ -37,7 +37,7 @@ class LoginController extends GetxController {
     return rid;
   }
 
-  loginBySms() async {
+  loginBySms(context) async {
     var resp = await Request().post(
         Api.loginBySMSCode,
         {
@@ -49,11 +49,11 @@ class LoginController extends GetxController {
     smsCodeController.clear();
     rid = "";
     await tokenFetch(resp.headers['X-Code'][0]);
-    await _userController.selectTenant();
+    await _userController.selectTenant(context);
     return resp.headers['X-Code'][0];
   }
 
-  loginByPwd() async {
+  loginByPwd(context) async {
     var tmp = utf8.encode(pwdController.text);
     var _pwd_md5 = md5.convert(tmp).toString();
     List<int> _rid = utf8.encode(rid);
@@ -69,7 +69,7 @@ class LoginController extends GetxController {
     pwdController.clear();
     rid = "";
     await tokenFetch(resp.headers['X-Code'][0]);
-    await _userController.selectTenant();
+    await _userController.selectTenant(context);
     return resp.headers['X-Code'][0];
   }
 

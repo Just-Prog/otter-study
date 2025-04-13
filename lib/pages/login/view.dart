@@ -85,7 +85,7 @@ class LoginPageState extends State<LoginPage> {
                               ],
                             )),
                             onConfirm: () {
-                              _loginController.loginBySms().then((_) {
+                              _loginController.loginBySms(context).then((_) {
                                 Get.offAllNamed("/");
                               });
                             },
@@ -116,7 +116,7 @@ class LoginPageState extends State<LoginPage> {
                                 obscureText: true,
                               )),
                               onConfirm: () async {
-                                _loginController.loginByPwd().then((_) {
+                                _loginController.loginByPwd(context).then((_) {
                                   Get.offAllNamed("/");
                                 });
                               },

@@ -59,7 +59,9 @@ class HomePage extends StatelessWidget {
                             children: [
                               TextButton(
                                   onPressed: () {
-                                    userController.selectTenant().then((_) {
+                                    userController
+                                        .selectTenant(context)
+                                        .then((_) {
                                       if (_ != null) {
                                         Get.offAllNamed("/");
                                       }

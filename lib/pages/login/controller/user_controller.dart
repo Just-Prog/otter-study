@@ -65,19 +65,28 @@ class UserController extends GetxController {
     return list;
   }
 
-  selectTenant() async {
+  selectTenant(BuildContext context) async {
     var resp = await Request().get(Api.getTenantList);
     List list = resp.data;
-    var target = await Get.defaultDialog(
-        title: '请选择学校/机构',
-        contentPadding: EdgeInsets.all(15),
-        content: Column(
-          children: list
-              .map((e) => ListTile(
-                  title: Text("${e['tenantName']}"),
-                  onTap: () => Get.back(result: e['tenantId'])))
-              .toList(),
-        ));
+    var target = await showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+              title: Text('请选择学校/机构'),
+              contentPadding: EdgeInsets.all(15),
+              content: Container(
+                  width: double.maxFinite,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: list
+                        .map((e) => ListTile(
+                            title: Text("${e['tenantName']}"),
+                            onTap: () {
+                              Navigator.of(context).pop(e['tenantId']);
+                            }))
+                        .toList(),
+                  )));
+        });
     if (target != null) {
       await switchTenant(target);
     }
