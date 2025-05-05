@@ -1,6 +1,7 @@
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:otter_study/http/index.dart';
+import 'package:otter_study/utils/ffmpeg.dart';
 
 class CoursewareController extends GetxController {
   RxString chapterId = "0".obs;
@@ -40,8 +41,13 @@ class CoursewareController extends GetxController {
 
   download() async {
     if (link.value.isEmpty) {
-      SmartDialog.showToast("暂未支持");
-      return;
+      if (vidAddr.value.isNotEmpty) {
+        await m3u8VideoExport(vidAddr.value, filename: name.value);
+        return;
+      } else {
+        SmartDialog.showToast("暂未支持");
+        return;
+      }
     }
     await Request().download(link.value, name.value);
   }
