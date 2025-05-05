@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import 'package:otter_study/http/index.dart';
+import 'package:otter_study/utils/permission/storage.dart';
 import 'interceptors.dart';
 
 int _downloadCount = 1;
@@ -53,29 +54,40 @@ class Request {
 
   download(String url, String name,
       {path, params, method = "GET", data}) async {
+    if (Platform.isAndroid) {
+      bool result = await storagePermissionCheck();
+      if (!result) {
+        return;
+      }
+    }
     String pathDivider = Platform.isWindows ? r"\" : r"/";
     var target = "${(await getDownloadDirectory()).path}$pathDivider$name";
-    log(target);
-
     final GlobalKey _loadingKey = GlobalKey();
     SmartDialog.showLoading(builder: (_) => _DownloadLoading(key: _loadingKey));
-    final Response resp = await dio.download(
-      url,
-      target,
-      queryParameters: params,
-      options: Options(method: method),
-      data: data,
-      onReceiveProgress: (count, total) {
-        _downloadCount = count;
-        _downloadTotal = total;
-        _loadingKey.currentState!.setState(
-          () {},
-        );
-      },
-    );
+    late final Response resp;
+    try {
+      resp = await dio.download(
+        url,
+        target,
+        queryParameters: params,
+        options: Options(method: method),
+        data: data,
+        onReceiveProgress: (count, total) {
+          _downloadCount = count;
+          _downloadTotal = total;
+          _loadingKey.currentState!.setState(
+            () {},
+          );
+        },
+      );
+      SmartDialog.showToast("文件已保存至 ${target}");
+    } catch (e) {
+      SmartDialog.showToast(e.toString());
+    }
     SmartDialog.dismiss(status: SmartStatus.loading);
-    SmartDialog.showToast("文件已存储至 $target");
-    return resp;
+    _downloadCount = 1;
+    _downloadTotal = 1;
+    return;
   }
 
   put(String url, {params, data, options}) async {

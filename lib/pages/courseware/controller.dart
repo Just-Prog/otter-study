@@ -43,8 +43,7 @@ class CoursewareController extends GetxController {
       SmartDialog.showToast("暂未支持");
       return;
     }
-    var resp = await Request().download(link.value, name.value);
-    return resp.data;
+    await Request().download(link.value, name.value);
   }
 
   @override

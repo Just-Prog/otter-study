@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:otter_study/http/index.dart';
-import 'package:otter_study/utils/geolocation.dart';
+import 'package:otter_study/utils/permission/geolocation.dart';
 
 class SignInController extends GetxController {
   RxString signId = "".obs;
