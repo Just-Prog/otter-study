@@ -26,7 +26,7 @@ class MsgController extends GetxController {
     },
     "CLASS_NOTICE": {
       "name": "班课通知",
-      "icon": "assets/icons/message/icon-class-notice"
+      "icon": "assets/icons/message/icon-class-notice.png"
     },
     "PROJECT_HELPER": {
       "name": "项目助手",
