@@ -198,10 +198,14 @@ class HomePage extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    CachedNetworkImage(
-                                      imageUrl:
-                                          "${homeController.newsData[idx]['coverUrl']}",
-                                    ),
+                                    if (homeController.newsData[idx]
+                                            ['coverUrl'] !=
+                                        "") ...[
+                                      CachedNetworkImage(
+                                        imageUrl:
+                                            "${homeController.newsData[idx]['coverUrl']}",
+                                      ),
+                                    ],
                                     Padding(
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 10, vertical: 11.5),
