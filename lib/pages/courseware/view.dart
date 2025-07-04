@@ -60,9 +60,7 @@ class _coursewareState extends State<CoursewarePage> {
             });
           }
         });
-      }
-
-      if ((Platform.isAndroid || Platform.isIOS) &&
+      } else if ((Platform.isAndroid || Platform.isIOS) &&
           _coursewareController.size.value < 104857600) {
         webviewController.setJavaScriptMode(JavaScriptMode.unrestricted);
         webviewController.enableZoom(false);
@@ -117,14 +115,31 @@ class _coursewareState extends State<CoursewarePage> {
               if (MediaQuery.of(context).size.width /
                       MediaQuery.of(context).size.height <=
                   1.2) ...[
-                if (_coursewareController.vidKey != "") ...[
+                if (_coursewareController.vidKey.value != "") ...[
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.35,
                     child: Video(controller: controller),
+                  ),
+                  Expanded(
+                    child: IntrinsicHeight(
+                      child: SizedBox(
+                        child: SingleChildScrollView(
+                          child: Center(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Text(_coursewareController.name.value),
+                                Text(_coursewareController.vidAddr.value),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   )
-                ],
-                if ((Platform.isAndroid || Platform.isIOS) &&
+                ] else if ((Platform.isAndroid || Platform.isIOS) &&
                     _coursewareController.size.value < 104857600) ...[
                   Expanded(
                     child: WebViewWidget(controller: webviewController),
@@ -140,9 +155,7 @@ class _coursewareState extends State<CoursewarePage> {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Text(_coursewareController.name.value),
-                                Text(_coursewareController.vidKey != ""
-                                    ? _coursewareController.vidAddr.value
-                                    : _coursewareController.link.value),
+                                Text(_coursewareController.link.value),
                               ],
                             ),
                           ),
@@ -152,42 +165,29 @@ class _coursewareState extends State<CoursewarePage> {
                   )
                 ]
               ] else ...[
-                if ((Platform.isAndroid || Platform.isIOS) &&
+                if (_coursewareController.vidKey.value != "") ...[
+                  Expanded(
+                    child: Video(controller: controller),
+                  )
+                ] else if ((Platform.isAndroid || Platform.isIOS) &&
                     _coursewareController.size.value < 104857600) ...[
                   Expanded(
                     child: WebViewWidget(controller: webviewController),
                   ),
                 ] else ...[
                   Expanded(
-                      child: IntrinsicHeight(
-                    child: IntrinsicWidth(
-                        child: Row(
-                      children: [
-                        if (_coursewareController.vidKey != "") ...[
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            child: Video(controller: controller),
-                          ),
+                      child: SingleChildScrollView(
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(_coursewareController.name.value),
+                          Text(_coursewareController.vidKey.value != ""
+                              ? _coursewareController.vidAddr.value
+                              : _coursewareController.link.value),
                         ],
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width *
-                              (_coursewareController.vidKey != "" ? 0.3 : 1),
-                          child: SingleChildScrollView(
-                            child: Center(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(_coursewareController.name.value),
-                                  Text(_coursewareController.vidKey != ""
-                                      ? _coursewareController.vidAddr.value
-                                      : _coursewareController.link.value),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    )),
+                      ),
+                    ),
                   ))
                 ]
               ]

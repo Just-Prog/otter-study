@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:otter_study/http/index.dart';
@@ -11,7 +13,7 @@ class CoursewareController extends GetxController {
   RxString link = "".obs;
   RxString docId = "".obs;
   RxInt size = 0.obs;
-  String vidKey = "";
+  RxString vidKey = "".obs;
   RxString vidAddr = "".obs;
   RxString ext = "".obs;
 
@@ -22,12 +24,12 @@ class CoursewareController extends GetxController {
     });
     name.value = resp.data['name'];
     link.value = resp.data['imageUrl'];
-    vidKey = resp.data['videoKey'];
+    vidKey.value = resp.data['videoKey'];
     docId.value = resp.data['docId'];
     ext.value = resp.data['typeStr'];
     size.value = int.parse(resp.data['size']);
-    if (vidKey != "") {
-      var resp_v = await Request().get(Api.fetchVideoAddress + vidKey);
+    if (vidKey.value != "") {
+      var resp_v = await Request().get(Api.fetchVideoAddress + vidKey.value);
       vidAddr.value = resp_v.data['address'];
       return vidAddr.value;
     }
