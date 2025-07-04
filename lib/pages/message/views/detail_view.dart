@@ -11,13 +11,14 @@ class MsgDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _detailController = Get.put(MsgDetailController());
+    final _msgController = Get.put(MsgController());
     return Obx(() => Scaffold(
           appBar: AppBar(
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (_detailController.type.value != "SYSTEM_NOTICE") ...[
+                if (_detailController.type.value == "CLASS_NOTICE") ...[
                   Text(
                     _detailController.className.value,
                     style: const TextStyle(fontSize: 16),
@@ -31,7 +32,8 @@ class MsgDetailPage extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   )
                 ] else ...[
-                  Text("系统通知")
+                  Text(_msgController.msgType[_detailController.type.value]
+                      ['name'])
                 ]
               ],
             ),
@@ -127,7 +129,8 @@ class MsgDetailPage extends StatelessWidget {
                                                       color: const Color(
                                                           0x22000000),
                                                     ),
-                                                    Text("${i['remark']}")
+                                                    Text(
+                                                        "${i['remark'] != "" ? i['remark'] : i['contentName']}")
                                                   ],
                                                 ),
                                               ),

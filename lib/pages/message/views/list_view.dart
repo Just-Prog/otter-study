@@ -51,21 +51,24 @@ class MsgPageState extends State<MsgPage> {
                           int time =
                               int.parse(_msgController.msgs[idx]['time']);
                           int unreadNum = _msgController.msgs[idx]['unreadNum'];
+
                           String timeTxt = _msgController.msgs[idx]['timeTxt'];
                           return ListTile(
                             onTap: () {
-                              if (type == "SYSTEM_NOTICE" ||
-                                  tenantId == _userController.tenantId.value) {
-                                Get.toNamed("/msg/detail", parameters: {
-                                  "type": type,
-                                  "classId": classId,
-                                  "className": className,
-                                  "tenantName": tenantName,
-                                });
-                                _msgController.refreshController.callRefresh();
-                              } else {
-                                SmartDialog.showToast("请先切换到对应的租户");
+                              if (type == "CLASS_NOTICE") {
+                                if (tenantId !=
+                                    _userController.tenantId.value) {
+                                  SmartDialog.showToast("请先切换到对应的租户");
+                                  return;
+                                }
                               }
+                              Get.toNamed("/msg/detail", parameters: {
+                                "type": type,
+                                "classId": classId,
+                                "className": className,
+                                "tenantName": tenantName,
+                              });
+                              _msgController.refreshController.callRefresh();
                             },
                             leading: type == "CLASS_NOTICE"
                                 ? CircleAvatar(
