@@ -34,8 +34,6 @@ Future m3u8VideoExport(String target,
         "-y -user_agent 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36' -referer 'https://edu.goktech.cn/' -i $target -c copy -f mp4 $saveLocation -v trace";
 
     final GlobalKey _loadingKey = GlobalKey();
-    SmartDialog.showLoading(
-        builder: (_) => _FFmpegProcessLoading(key: _loadingKey));
     var session = await FFmpegKit.executeAsync(command, (e) async {
       var state = await e.getState();
       if (state == SessionState.completed) {
@@ -46,9 +44,17 @@ Future m3u8VideoExport(String target,
         SmartDialog.showToast("处理失败，请查询日志");
       }
     }, (e) {
-      ffmpeg_logs = "${e.getMessage()}";
-      _loadingKey.currentState!.setState(() {});
+      ffmpeg_logs = e.getMessage();
+      _loadingKey.currentState?.setState(() {});
     }, null);
+    SmartDialog.showLoading(
+        backType: SmartBackType.block,
+        clickMaskDismiss: false,
+        builder: (_) => _FFmpegProcessLoading(key: _loadingKey),
+        onBack: () {
+          session.cancel();
+          return true;
+        });
   } else {
     SmartDialog.showToast("下载组件不支持该平台:${Platform.operatingSystem}");
     return;
