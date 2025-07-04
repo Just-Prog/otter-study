@@ -68,8 +68,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const prod = bool.fromEnvironment("dart.vm.product");
     return GetMaterialApp(
-      title: 'OtterStudy',
+      title: prod ? 'OtterStudy' : "@tterStudy Dev",
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Color(0xffff9716)),
           useMaterial3: true,
