@@ -9,8 +9,8 @@ allprojects {
         maven { setUrl('https://maven.aliyun.com/repository/grails-core/')}
         maven { setUrl('https://maven.aliyun.com/repository/apache-snapshots/')}
         maven { setUrl('https://mirrors.cernet.edu.cn/git/flutter/download.flutter.io') }
-//        google()
-//        mavenCentral()
+        google()
+        mavenCentral()
     }
 }
 
