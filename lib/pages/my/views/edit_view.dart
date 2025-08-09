@@ -149,6 +149,38 @@ class _UserEditingState extends State<UserEditingView>
                                                             Icon(Icons.school)),
                                                 maxLines: 1,
                                               ),
+                                              TextFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                        labelText: "专业",
+                                                        icon: Icon(Icons
+                                                            .build_circle)),
+                                                maxLines: 1,
+                                              ),
+                                              TextFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                        labelText: "学历",
+                                                        icon: Icon(
+                                                            Icons.menu_book)),
+                                                maxLines: 1,
+                                              ),
+                                              TextFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                        labelText: "入学年份",
+                                                        icon: Icon(
+                                                            Icons.schedule)),
+                                                maxLines: 1,
+                                              ),
+                                              TextFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                        labelText: "学校所在地",
+                                                        icon: Icon(Icons
+                                                            .location_pin)),
+                                                maxLines: 1,
+                                              ),
                                               Row(
                                                 children: [
                                                   const Icon(Icons.wc),
