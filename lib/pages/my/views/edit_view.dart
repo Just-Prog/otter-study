@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart' hide MultipartFile, FormData;
+import 'package:toggle_switch/toggle_switch.dart';
+
 import 'package:otter_study/pages/login/controller/index.dart';
 
 class UserEditingView extends StatefulWidget {
@@ -11,9 +13,9 @@ class UserEditingView extends StatefulWidget {
   State<StatefulWidget> createState() => _UserEditingState();
 }
 
-class _UserEditingState extends State<UserEditingView> {
-  final _credentialController = Get.put(CredentialController());
-
+class _UserEditingState extends State<UserEditingView>
+    with TickerProviderStateMixin {
+  String? _selectedGender;
   _memberRoleDesc(int i) {
     switch (i) {
       case 1:
@@ -28,17 +30,24 @@ class _UserEditingState extends State<UserEditingView> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    final _userController = Get.put(UserController());
+    _selectedGender = _userController.userFullInfo['gender'] ?? "male";
+  }
+
+  @override
   Widget build(BuildContext context) {
     final _userController = Get.put(UserController());
     return Scaffold(
       appBar: AppBar(
-        title: Text("编辑资料"),
+        title: Text("资料"),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: Obx(() => ListView(
               children: [
-                _moduleCard(
+                _ModuleCard(
                     body: Column(
                   children: ListTile.divideTiles(
                       context: context,
@@ -65,8 +74,24 @@ class _UserEditingState extends State<UserEditingView> {
                         ),
                         _ListTile48(
                           title: Text("学校/机构"),
-                          trailing: Text(
-                              "${_userController.userFullInfoJWT['tenants'][0]['tenantName'] ?? ""}"),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                  "${_userController.userFullInfoJWT['tenants'][0]['tenantName'] ?? ""}"),
+                              Icon(
+                                Icons.arrow_drop_down,
+                                size: 16,
+                              )
+                            ],
+                          ),
+                          onTap: () async {
+                            _userController.selectTenant(context).then((_) {
+                              if (_ != null) {
+                                Get.offAllNamed("/");
+                              }
+                            });
+                          },
                         ),
                         _ListTile48(
                           title: Text("角色"),
@@ -86,57 +111,165 @@ class _UserEditingState extends State<UserEditingView> {
                       ]).toList(),
                 )),
                 const SizedBox(height: 15),
-                _moduleCard(
+                _ModuleCard(
+                    onTap: () async {
+                      await showDialog(
+                          context: context,
+                          builder: (ctx) {
+                            String _dialogGender =
+                                _userController.userFullInfo['gender'] ??
+                                    "male";
+                            GlobalKey _form = GlobalKey();
+                            return AlertDialog(
+                              title: Text("编辑资料"),
+                              content:
+                                  StatefulBuilder(builder: (context, setState) {
+                                return Container(
+                                  width: double.maxFinite,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Form(
+                                          key: _form,
+                                          child: Column(
+                                            children: [
+                                              TextFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                        labelText: "姓名",
+                                                        icon:
+                                                            Icon(Icons.person)),
+                                                maxLines: 1,
+                                              ),
+                                              TextFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                        labelText: "学校",
+                                                        icon:
+                                                            Icon(Icons.school)),
+                                                maxLines: 1,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  const Icon(Icons.wc),
+                                                  Expanded(
+                                                      child: Row(
+                                                    children: [
+                                                      Radio(
+                                                        value: "male",
+                                                        onChanged: // 此处在后续测试版有行为和组件变更
+                                                            (String? value) {
+                                                          setState(() {
+                                                            _dialogGender =
+                                                                "male";
+                                                          });
+                                                        },
+                                                        groupValue:
+                                                            _dialogGender,
+                                                      ),
+                                                      const Text("男"),
+                                                      const SizedBox(width: 15),
+                                                      Radio(
+                                                        value: "female",
+                                                        onChanged:
+                                                            (String? value) {
+                                                          setState(() {
+                                                            _dialogGender =
+                                                                "female";
+                                                          });
+                                                        },
+                                                        groupValue:
+                                                            _dialogGender,
+                                                      ),
+                                                      const Text("女"),
+                                                    ],
+                                                  )),
+                                                ],
+                                              ),
+                                              TextFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                        labelText: "QQ",
+                                                        icon: Icon(Icons
+                                                            .contact_mail)),
+                                                maxLines: 1,
+                                              ),
+                                            ],
+                                          ))
+                                    ],
+                                  ),
+                                );
+                              }),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(ctx).pop();
+                                  },
+                                  child: Text("取消"),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _selectedGender = _dialogGender;
+                                    });
+                                    Navigator.of(ctx).pop();
+                                  },
+                                  child: Text("确定"),
+                                ),
+                              ],
+                            );
+                          });
+                    },
                     body: Column(
-                  children: ListTile.divideTiles(
-                    tiles: [
-                      _ListTile48(
-                        title: Text("姓名"),
-                        trailing:
-                            Text("${_userController.userFullInfo['nickName']}"),
-                      ),
-                      _ListTile48(
-                        title: Text("性别"),
-                        trailing: Text(
-                            "${_userController.userFullInfo['genderTxt']}"),
-                      ),
-                      _ListTile48(
-                        title: Text("学校"),
-                        trailing:
-                            Text("${_userController.userFullInfo['college']}"),
-                      ),
-                      _ListTile48(
-                        title: Text("专业"),
-                        trailing:
-                            Text("${_userController.userFullInfo['major']}"),
-                      ),
-                      _ListTile48(
-                        title: Text("学历"),
-                        trailing: Text(
-                            "${_userController.userFullInfo['degreeTxt']}"),
-                      ),
-                      _ListTile48(
-                        title: Text("入学时间"),
-                        trailing: Text(
-                            "${_userController.userFullInfo['enrollmentYear']}"),
-                      ),
-                      _ListTile48(
-                        title: Text("学校所在地"),
-                        trailing:
-                            Text("${_userController.userFullInfo['city']}"),
-                      ),
-                      _ListTile48(
-                        title: Text("QQ"),
-                        trailing: Text(
-                            "${_userController.userFullInfo['qq'].isEmpty ? "未设置" : _userController.userFullInfo['qq']}"),
-                      ),
-                    ],
-                    context: context,
-                    color: Color(0x11333333),
-                  ).toList(),
-                )),
+                      children: ListTile.divideTiles(
+                        tiles: [
+                          _ListTile48(
+                            title: Text("姓名"),
+                            trailing: Text(
+                                "${_userController.userFullInfo['nickName']}"),
+                          ),
+                          _ListTile48(
+                            title: Text("性别"),
+                            trailing: Text(
+                                "${_userController.userFullInfo['genderTxt']}"),
+                          ),
+                          _ListTile48(
+                            title: Text("学校"),
+                            trailing: Text(
+                                "${_userController.userFullInfo['college']}"),
+                          ),
+                          _ListTile48(
+                            title: Text("专业"),
+                            trailing: Text(
+                                "${_userController.userFullInfo['major']}"),
+                          ),
+                          _ListTile48(
+                            title: Text("学历"),
+                            trailing: Text(
+                                "${_userController.userFullInfo['degreeTxt']}"),
+                          ),
+                          _ListTile48(
+                            title: Text("入学时间"),
+                            trailing: Text(
+                                "${_userController.userFullInfo['enrollmentYear']}"),
+                          ),
+                          _ListTile48(
+                            title: Text("学校所在地"),
+                            trailing:
+                                Text("${_userController.userFullInfo['city']}"),
+                          ),
+                          _ListTile48(
+                            title: Text("QQ"),
+                            trailing: Text(
+                                "${_userController.userFullInfo['qq'].isEmpty ? "未设置" : _userController.userFullInfo['qq']}"),
+                          ),
+                        ],
+                        context: context,
+                        color: Color(0x11333333),
+                      ).toList(),
+                    )),
                 const SizedBox(height: 15),
-                _moduleCard(
+                _ModuleCard(
                     body: Column(
                   children: ListTile.divideTiles(
                     tiles: [
@@ -181,16 +314,21 @@ class _UserEditingState extends State<UserEditingView> {
   }
 }
 
-class _moduleCard extends StatelessWidget {
+class _ModuleCard extends StatelessWidget {
   Widget body;
-  _moduleCard({required this.body});
+  GestureTapCallback? onTap;
+  _ModuleCard({required this.body, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: body,
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: body,
+        ),
       ),
     );
   }
