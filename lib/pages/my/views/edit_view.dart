@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart' hide MultipartFile, FormData;
-import 'package:toggle_switch/toggle_switch.dart';
 
 import 'package:otter_study/pages/login/controller/index.dart';
 
@@ -15,7 +14,25 @@ class UserEditingView extends StatefulWidget {
 
 class _UserEditingState extends State<UserEditingView>
     with TickerProviderStateMixin {
+  // data = {
+  //   "nickName": "",
+  //   "college": "",
+  //   "major": "",
+  //   "enrollmentYear": "",
+  //   "city": "",
+  //   "qq": "",
+  //   "gender": "",
+  //   "degree": ""
+  // };
+  TextEditingController nickNameController = TextEditingController();
   String? _selectedGender;
+  TextEditingController collegeController = TextEditingController();
+  TextEditingController majorController = TextEditingController();
+  TextEditingController enrollmentYearController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController degreeController = TextEditingController();
+  TextEditingController qqController = TextEditingController();
+
   _memberRoleDesc(int i) {
     switch (i) {
       case 1:
@@ -29,11 +46,40 @@ class _UserEditingState extends State<UserEditingView>
     }
   }
 
+  _userDegreeDesc(int i) {
+    switch (i) {
+      case 1:
+        return "初中及以下";
+      case 2:
+        return "中专/中技";
+      case 3:
+        return "高中";
+      case 4:
+        return "大专";
+      case 5:
+        return "本科";
+      case 6:
+        return "硕士";
+      case 7:
+        return "博士";
+      default:
+        return "未知";
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     final _userController = Get.put(UserController());
+    nickNameController.text = _userController.userFullInfo['nickName'];
     _selectedGender = _userController.userFullInfo['gender'] ?? "male";
+    collegeController.text = _userController.userFullInfo['college'] ?? "";
+    majorController.text = _userController.userFullInfo['major'];
+    enrollmentYearController.text =
+        _userController.userFullInfo['enrollmentYear'];
+    cityController.text = _userController.userFullInfo['city'] ?? "";
+    degreeController.text = _userController.userFullInfo['degree'] ?? 0;
+    qqController.text = _userController.userFullInfo['qq'];
   }
 
   @override
@@ -140,6 +186,7 @@ class _UserEditingState extends State<UserEditingView>
                                                         icon:
                                                             Icon(Icons.person)),
                                                 maxLines: 1,
+                                                controller: nickNameController,
                                               ),
                                               TextFormField(
                                                 decoration:
@@ -148,6 +195,7 @@ class _UserEditingState extends State<UserEditingView>
                                                         icon:
                                                             Icon(Icons.school)),
                                                 maxLines: 1,
+                                                controller: collegeController,
                                               ),
                                               TextFormField(
                                                 decoration:
@@ -156,6 +204,7 @@ class _UserEditingState extends State<UserEditingView>
                                                         icon: Icon(Icons
                                                             .build_circle)),
                                                 maxLines: 1,
+                                                controller: majorController,
                                               ),
                                               TextFormField(
                                                 decoration:
@@ -164,6 +213,7 @@ class _UserEditingState extends State<UserEditingView>
                                                         icon: Icon(
                                                             Icons.menu_book)),
                                                 maxLines: 1,
+                                                controller: degreeController,
                                               ),
                                               TextFormField(
                                                 decoration:
@@ -172,6 +222,8 @@ class _UserEditingState extends State<UserEditingView>
                                                         icon: Icon(
                                                             Icons.schedule)),
                                                 maxLines: 1,
+                                                controller:
+                                                    enrollmentYearController,
                                               ),
                                               TextFormField(
                                                 decoration:
@@ -180,6 +232,7 @@ class _UserEditingState extends State<UserEditingView>
                                                         icon: Icon(Icons
                                                             .location_pin)),
                                                 maxLines: 1,
+                                                controller: cityController,
                                               ),
                                               Row(
                                                 children: [
@@ -225,6 +278,7 @@ class _UserEditingState extends State<UserEditingView>
                                                         icon: Icon(Icons
                                                             .contact_mail)),
                                                 maxLines: 1,
+                                                controller: qqController,
                                               ),
                                             ],
                                           ))
