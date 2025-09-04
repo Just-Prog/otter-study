@@ -23,6 +23,8 @@ class Api {
   //用户信息
   static const String fetchUserInfo = "/uc/v1/users/info";
   static const String setUserAvatar = "/uc/v1/users/avatar";
+  static const String fetchCollegeList = "/tc/v1/colleges-list";
+  static const String fetchCityList = "/tc/city-list";
 
   //首页信息
   static const String homePageCarousels = "/tac/home-page/mngCarousels";

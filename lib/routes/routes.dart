@@ -8,6 +8,7 @@ import 'package:otter_study/pages/login/index.dart';
 import 'package:otter_study/pages/message/index.dart';
 import 'package:otter_study/pages/main/index.dart';
 import 'package:otter_study/pages/my/views/edit_view.dart';
+import 'package:otter_study/pages/my/views/selection_page.dart';
 import 'package:otter_study/pages/signIn/index.dart';
 import 'package:otter_study/pages/webview/index.dart';
 
@@ -23,6 +24,10 @@ class Routes {
     GetPage(name: "/courseware", page: () => const CoursewarePage()),
     GetPage(name: "/webview", page: () => const Webview()),
     GetPage(name: "/user/login", page: () => const LoginPage()),
-    GetPage(name: "/user/edit", page: () => const UserEditingView())
+    GetPage(name: "/user/edit", page: () => const UserEditingView()),
+    GetPage(name: "/user/selection", page: () => SelectionPage(
+      type: Get.parameters['type'] ?? 'school',
+      currentValue: Get.parameters['currentValue'],
+    ))
   ];
 }

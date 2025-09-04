@@ -70,16 +70,19 @@ class _UserEditingState extends State<UserEditingView>
   @override
   void initState() {
     super.initState();
-    final _userController = Get.put(UserController());
-    nickNameController.text = _userController.userFullInfo['nickName'];
-    _selectedGender = _userController.userFullInfo['gender'] ?? "male";
-    collegeController.text = _userController.userFullInfo['college'] ?? "";
-    majorController.text = _userController.userFullInfo['major'];
+  }
+
+  _initEditDialog() {
+    final userController = Get.put(UserController());
+    nickNameController.text = userController.userFullInfo['nickName'];
+    _selectedGender = userController.userFullInfo['gender'] ?? "male";
+    collegeController.text = userController.userFullInfo['college'] ?? "";
+    majorController.text = userController.userFullInfo['major'];
     enrollmentYearController.text =
-        _userController.userFullInfo['enrollmentYear'];
-    cityController.text = _userController.userFullInfo['city'] ?? "";
-    degreeController.text = _userController.userFullInfo['degree'] ?? 0;
-    qqController.text = _userController.userFullInfo['qq'];
+        userController.userFullInfo['enrollmentYear'];
+    cityController.text = userController.userFullInfo['city'] ?? "";
+    degreeController.text = userController.userFullInfo['degree'] ?? 0;
+    qqController.text = userController.userFullInfo['qq'];
   }
 
   @override
@@ -159,6 +162,7 @@ class _UserEditingState extends State<UserEditingView>
                 const SizedBox(height: 15),
                 _ModuleCard(
                     onTap: () async {
+                      _initEditDialog(); // 在弹出对话框的时候进行初始化
                       await showDialog(
                           context: context,
                           builder: (ctx) {
@@ -188,14 +192,47 @@ class _UserEditingState extends State<UserEditingView>
                                                 maxLines: 1,
                                                 controller: nickNameController,
                                               ),
-                                              TextFormField(
-                                                decoration:
-                                                    const InputDecoration(
-                                                        labelText: "学校",
-                                                        icon:
-                                                            Icon(Icons.school)),
-                                                maxLines: 1,
-                                                controller: collegeController,
+                                              InkWell(
+                                                onTap: () async {
+                                                  final result =
+                                                      await Get.toNamed(
+                                                    '/user/selection',
+                                                    parameters: {
+                                                      'type': 'school',
+                                                      'currentValue':
+                                                          collegeController
+                                                              .text,
+                                                    },
+                                                  );
+                                                  if (result != null) {
+                                                    collegeController.text =
+                                                        result;
+                                                    setState(
+                                                        () {}); // Force rebuild
+                                                  }
+                                                },
+                                                child: InputDecorator(
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    labelText: "学校",
+                                                    icon: Icon(Icons.school),
+                                                    suffixIcon: Icon(
+                                                        Icons.arrow_drop_down),
+                                                  ),
+                                                  child: Text(
+                                                    collegeController
+                                                            .text.isEmpty
+                                                        ? "请选择学校"
+                                                        : collegeController
+                                                            .text,
+                                                    style: TextStyle(
+                                                      color: collegeController
+                                                              .text.isEmpty
+                                                          ? Colors.grey
+                                                          : Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
                                               TextFormField(
                                                 decoration:
@@ -206,14 +243,100 @@ class _UserEditingState extends State<UserEditingView>
                                                 maxLines: 1,
                                                 controller: majorController,
                                               ),
-                                              TextFormField(
-                                                decoration:
-                                                    const InputDecoration(
-                                                        labelText: "学历",
-                                                        icon: Icon(
-                                                            Icons.menu_book)),
-                                                maxLines: 1,
-                                                controller: degreeController,
+                                              InkWell(
+                                                onTap: () async {
+                                                  final educationLevels = [
+                                                    "初中及以下",
+                                                    "中专/中技",
+                                                    "高中",
+                                                    "大专",
+                                                    "本科",
+                                                    "硕士",
+                                                    "博士"
+                                                  ];
+
+                                                  final selected =
+                                                      await showDialog<String>(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title:
+                                                            const Text("选择学历"),
+                                                        content: SizedBox(
+                                                          width:
+                                                              double.maxFinite,
+                                                          child:
+                                                              ListView.builder(
+                                                            shrinkWrap: true,
+                                                            itemCount:
+                                                                educationLevels
+                                                                    .length,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              final level =
+                                                                  educationLevels[
+                                                                      index];
+                                                              final isSelected =
+                                                                  degreeController
+                                                                          .text ==
+                                                                      (index +
+                                                                              1)
+                                                                          .toString();
+                                                              return ListTile(
+                                                                title:
+                                                                    Text(level),
+                                                                trailing: isSelected
+                                                                    ? const Icon(
+                                                                        Icons
+                                                                            .check,
+                                                                        color: Colors
+                                                                            .blue)
+                                                                    : null,
+                                                                onTap: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop((index +
+                                                                              1)
+                                                                          .toString());
+                                                                },
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+
+                                                  if (selected != null) {
+                                                    degreeController.text =
+                                                        selected;
+                                                    setState(
+                                                        () {}); // Force rebuild
+                                                  }
+                                                },
+                                                child: InputDecorator(
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    labelText: "学历",
+                                                    icon: Icon(Icons.menu_book),
+                                                    suffixIcon: Icon(
+                                                        Icons.arrow_drop_down),
+                                                  ),
+                                                  child: Text(
+                                                    degreeController
+                                                            .text.isEmpty
+                                                        ? "请选择学历"
+                                                        : "${_userDegreeDesc(int.parse(degreeController.text))}",
+                                                    style: TextStyle(
+                                                      color: degreeController
+                                                              .text.isEmpty
+                                                          ? Colors.grey
+                                                          : Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
                                               TextFormField(
                                                 decoration:
@@ -225,14 +348,45 @@ class _UserEditingState extends State<UserEditingView>
                                                 controller:
                                                     enrollmentYearController,
                                               ),
-                                              TextFormField(
-                                                decoration:
-                                                    const InputDecoration(
-                                                        labelText: "学校所在地",
-                                                        icon: Icon(Icons
-                                                            .location_pin)),
-                                                maxLines: 1,
-                                                controller: cityController,
+                                              InkWell(
+                                                onTap: () async {
+                                                  final result =
+                                                      await Get.toNamed(
+                                                    '/user/selection',
+                                                    parameters: {
+                                                      'type': 'location',
+                                                      'currentValue':
+                                                          cityController.text,
+                                                    },
+                                                  );
+                                                  if (result != null) {
+                                                    cityController.text =
+                                                        result;
+                                                    setState(
+                                                        () {}); // Force rebuild
+                                                  }
+                                                },
+                                                child: InputDecorator(
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    labelText: "学校所在地",
+                                                    icon: Icon(
+                                                        Icons.location_pin),
+                                                    suffixIcon: Icon(
+                                                        Icons.arrow_drop_down),
+                                                  ),
+                                                  child: Text(
+                                                    cityController.text.isEmpty
+                                                        ? "请选择所在地"
+                                                        : cityController.text,
+                                                    style: TextStyle(
+                                                      color: cityController
+                                                              .text.isEmpty
+                                                          ? Colors.grey
+                                                          : Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
                                               Row(
                                                 children: [
