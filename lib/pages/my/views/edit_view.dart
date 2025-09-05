@@ -453,7 +453,7 @@ class _UserEditingState extends State<UserEditingView>
                                   onPressed: () async {
                                     final _data = {
                                       "nickName": nickNameController.text,
-                                      "gender": _selectedGender,
+                                      "gender": _dialogGender,
                                       "college": collegeController.text,
                                       "major": majorController.text,
                                       "enrollmentYear":
