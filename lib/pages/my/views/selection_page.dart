@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:otter_study/http/api.dart';
 import 'package:otter_study/http/index.dart';
 
 class SelectionPage extends StatefulWidget {
@@ -52,20 +51,21 @@ class _SelectionPageState extends State<SelectionPage> {
     late final params;
     if (widget.type == 'school') {
       target = Api.fetchCollegeList;
-      params = {};
+      params = null;
     } else {
       target = Api.fetchCityList;
       params = {'sortType': 'province'};
     }
     Request().get(target, params: params).then((_) {
-      final _data = _.data as List<dynamic>;
       if (widget.type == 'school') {
+        final _data = _.data as List<dynamic>;
         setState(() {
           items = _data.map((v) => v['collegesName']).toList();
         });
       } else {
         // Handle province-city structure
         setState(() {
+          final _data = _.data as List;
           provinces = _data;
         });
       }

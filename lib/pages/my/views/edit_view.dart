@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart' hide MultipartFile, FormData;
+import 'package:otter_study/http/index.dart';
 
 import 'package:otter_study/pages/login/controller/index.dart';
 
@@ -88,6 +89,7 @@ class _UserEditingState extends State<UserEditingView>
   @override
   Widget build(BuildContext context) {
     final _userController = Get.put(UserController());
+    final _apiCredentialController = Get.put(CredentialController());
     return Scaffold(
       appBar: AppBar(
         title: Text("资料"),
@@ -448,10 +450,26 @@ class _UserEditingState extends State<UserEditingView>
                                   child: Text("取消"),
                                 ),
                                 TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _selectedGender = _dialogGender;
-                                    });
+                                  onPressed: () async {
+                                    final _data = {
+                                      "nickName": nickNameController.text,
+                                      "gender": _selectedGender,
+                                      "college": collegeController.text,
+                                      "major": majorController.text,
+                                      "enrollmentYear":
+                                          enrollmentYearController.text,
+                                      "city": cityController.text,
+                                      "degree": degreeController.text,
+                                      "qq": qqController.text,
+                                    };
+                                    final resp = await Request()
+                                        .put(Api.fetchUserInfo, data: _data);
+                                    await _apiCredentialController
+                                        .setCredential(
+                                            resp.headers['X-Token'][0],
+                                            resp.headers['X-Mackey'][0]);
+                                    _userController.userFullInfo.value =
+                                        resp.data;
                                     Navigator.of(ctx).pop();
                                   },
                                   child: Text("确定"),
