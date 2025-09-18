@@ -47,6 +47,7 @@ class _SignInGestureState extends State<SignInGesturePage> {
                         SizedBox(
                           height: 25,
                         ),
+                        Text("T9手势码(Debug): ${_signinController.gesture}"),
                         Obx(
                           () => _signinController.signTime.value != 0
                               ? Text(
