@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:core';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:otter_study/pages/login/controller/index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,6 +60,10 @@ class CredentialController extends GetxController {
     try {
       var resp = await Request().post(Api.refreshToken, null,
           options: Options(extra: {"target": "refresh"}));
+      if (resp.data['code'] == 40101) {
+        SmartDialog.showToast("请重新登录");
+        Get.toNamed('/user/login');
+      }
       await setCredential(
           resp.headers['X-Token'][0], resp.headers['X-Mackey'][0]);
     } catch (e) {
