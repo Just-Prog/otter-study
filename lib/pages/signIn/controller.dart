@@ -19,8 +19,10 @@ class SignInController extends GetxController {
   double latitude = 0.0;
 
   fetchSigninInfo() async {
-    var resp = await Request().get(Api.fetchSigninInfoApp + signId.value,
-        options: Options(extra: {'version': "android"}));
+    var resp = await Request().get(
+      Api.fetchSigninInfoApp + signId.value,
+      // options: Options(extra: {'version': "ios"})
+    );
     var data = resp.data;
     gesture = data['gesture'];
     typeStr.value = data['typeStr'];
@@ -46,8 +48,9 @@ class SignInController extends GetxController {
       "gesture": gesture
     };
     var resp = await Request().post(
-        Api.submitSigninRequestApp + signId.value, data,
-        options: Options(extra: {'version': "android"}));
+      Api.submitSigninRequestApp + signId.value, data,
+      // options: Options(extra: {'version': "ios"})
+    );
     SmartDialog.showToast("${resp.data['message']}");
     Get.back();
   }

@@ -6,7 +6,6 @@ import 'package:get/get.dart' hide Response;
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
 
-import 'package:otter_study/http/index.dart';
 import 'package:otter_study/pages/login/controller/index.dart';
 
 class ApiInterceptor extends Interceptor {
@@ -90,15 +89,14 @@ class ApiInterceptor extends Interceptor {
   }
 
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
     print(err.response?.realUri.toString());
     print(err.response?.data);
-    print(err.message);
     SmartDialog.showToast(
         "请求错误: ${err.response?.realUri.toString()}\n(${err.response?.data ?? err.message})");
-    // if (err.response?.data['code'] == 10701) {
-    //   _apiCredentialController.logout();
-    // }
+    if (err.response?.data['code'] == 10700) {
+      await _apiCredentialController.refreshToken();
+    }
     handler.next(err);
   }
 }
