@@ -107,6 +107,7 @@ class HomePage extends StatelessWidget {
                                             children: [
                                               CachedNetworkImage(
                                                 width: double.infinity,
+                                                fit: BoxFit.cover,
                                                 imageUrl: "${e['coverUrl']}",
                                                 placeholder: (context, url) =>
                                                     SizedBox(
