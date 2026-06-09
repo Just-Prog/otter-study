@@ -32,7 +32,7 @@ jobs:
     
     ios:
         name: Build CI (iOS) (TEST ONLY)
-        runs-on: macos-latest
+        runs-on: macos-26
         
         steps:
           - name: Clone repository
